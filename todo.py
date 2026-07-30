@@ -24,18 +24,10 @@ def create_list(todo):
             elif command == 'del':
 
             if len(parts) > 1:
-
-                idx = int(parts[1])
-                todo.pop(idx)
-
+try:
+                    idx = int(parts[1])
         elif command == 'edit':
-            if len(parts) > 1:
-                idx = int(parts[1])
-                new_text_task = input('enter new text task: ')
-                todo[idx] = new_text_task
-            else:
-                todo.append(name_task)
-                print("\n" + " TASKS ".center(width, "="))
+           
 @@ -45,10 +56,12 @@ def timer(minutes):
         time.sleep(1)
         seconds -= 1
