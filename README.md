@@ -1,4 +1,4 @@
-# pomotrack
+
 # Focus Hub
 
 A modular CLI productivity suite for managing your time, tasks, and habits.
