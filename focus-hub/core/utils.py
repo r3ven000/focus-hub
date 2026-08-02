@@ -1,4 +1,5 @@
 import os
+import re
 import time
 from pyfiglet import Figlet
 
@@ -37,5 +38,13 @@ def timer(minutes, width):
     time.sleep(1)
 
 
+ANSI_RE = re.compile(r'\x1b\[[0-9;]*m', re.UNICODE)
+
+
+def center_line(text: str, width: int) -> str:
+    visible = ANSI_RE.sub('', text).rstrip('\n')
+    pad = max(0, (width - len(visible)) // 2)
+    return ' ' * pad + text
+  
 
   
