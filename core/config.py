@@ -11,14 +11,16 @@ custom_colors = "grad-blue"
 env = os.environ.copy()
 env["FORCE_COLOR"] = "3"
 
-result = subprocess.run(
-    ["npx", "oh-my-logo@latest", text, custom_colors, "--filled"],
+result = result = subprocess.run(
+    ["npx", "oh-my-logo@latest", text, custom_colors,
+     "--filled", "--block-font", "block", "--letter-spacing", "0"],
     capture_output=True,
     text=True,
     encoding="utf-8",
     env=env,  # Передаем обновленное окружение с включенным цветом
     check=True,
 )
+
 WELCOME_ART = result.stdout
 WORK_TIME = 25
 BREAK_TIME = 5

@@ -34,7 +34,7 @@ def main():
         print('\n' * 2)
 
         for name, key in ITEMS_MENU:
-            row = f'{name:<65}{key:>5}'
+            row = f'{name:<70}{key:>5}'
             print(center_line(row, width))
             print()
 
