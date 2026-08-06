@@ -1,13 +1,10 @@
-#POMOTRACK Project Settings and Constants
 import os
 import re
 import subprocess
 
 text = "FOCUS-HUB"
-# Ваш кастомный градиент (Синий -> Голубой -> Белый -> Серый)
 custom_colors = "grad-blue"
 
-# Берем текущее окружение системы и принудительно включаем цвет
 env = os.environ.copy()
 env["FORCE_COLOR"] = "3"
 
@@ -17,7 +14,7 @@ result = result = subprocess.run(
     capture_output=True,
     text=True,
     encoding="utf-8",
-    env=env,  # Передаем обновленное окружение с включенным цветом
+    env=env,
     check=True,
 )
 
