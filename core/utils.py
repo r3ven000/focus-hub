@@ -3,7 +3,7 @@ import re
 import time
 from pyfiglet import Figlet
 
-figlet = Figlet(font='big')
+figlet = Figlet(font='dos_rebel')
 
 def clear_screen() -> None:
 #Clears the terminal screen depending on the operating system.
@@ -22,7 +22,6 @@ def timer(minutes, width):
         try:
             remaining = end_time - time.time()
             mins, secs = divmod(int(remaining), 60)
-            timer_str = f'remaining: {mins:02d}:{secs:02d}'
         
             os.system('cls' if os.name == 'nt' else 'clear')
             width = os.get_terminal_size().columns
@@ -31,6 +30,53 @@ def timer(minutes, width):
             for line in ascii_time.split('\n'):
                 if line.strip():
                     print(line.center(width))
+            computer = r"""
+
+
+
+
+
+                       .,,uod8B8bou,,.
+              ..,uod8BBBBBBBBBBBBBBBBRPFT?l!i:.
+         ,=m8BBBBBBBBBBBBBBBRPFT?!||||||||||||||
+         !...:!TVBBBRPFT||||||||||!!^^""'   ||||
+         !.......:!?|||||!!^^""'            ||||
+         !.........||||                     ||||
+         !.........||||  ##                 ||||
+         !.........||||                     ||||
+         !.........||||                     ||||
+         !.........||||                     ||||
+         !.........||||                     ||||
+         `.........||||                    ,||||
+          .;.......||||               _.-!!|||||
+   .,uodWBBBBb.....||||       _.-!!|||||||||!:'
+!YBBBBBBBBBBBBBBb..!|||:..-!!|||||||!iof68BBBBBb....
+!..YBBBBBBBBBBBBBBb!!||||||||!iof68BBBBBBRPFT?!::   `.
+!....YBBBBBBBBBBBBBBbaaitf68BBBBBBRPFT?!:::::::::     `.
+!......YBBBBBBBBBBBBBBBBBBBRPFT?!::::::;:!^"`;:::       `.
+!........YBBBBBBBBBBRPFT?!::::::::::^''...::::::;         iBBbo.
+`..........YBRPFT?!::::::::::::::::::::::::;iof68bo.      WBBBBbo.
+  `..........:::::::::::::::::::::::;iof688888888888b.     `YBBBP^'
+    `........::::::::::::::::;iof688888888888888888888b.     `
+      `......:::::::::;iof688888888888888888888888888888b.
+        `....:::;iof688888888888888888888888888888888899fT!
+          `..::!8888888888888888888888888888888899fT|!^"'
+            `' !!988888888888888888888888899fT|!^"'
+                `!!8888888888888888899fT|!^"'
+                  `!988888888899fT|!^"'
+                    `!9899fT|!^"'
+                      `!^"'
+
+
+
+
+"""
+            print('')
+            print('')
+            art_lines = [l for l in computer.split('\n') if l.strip()]
+            pad = max(0, (width - max(len(l) for l in art_lines)) // 2)
+            for l in art_lines:
+                print(' ' * pad + l)
             time.sleep(0.5)
         except KeyboardInterrupt: 
             break
