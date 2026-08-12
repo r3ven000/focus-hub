@@ -1,4 +1,4 @@
-from core.utils import clear_screen, get_terminal_width, in_dev, center_line
+from core.utils import clear_screen, get_terminal_width, in_dev, center_line, lerp_color, colorize
 from core.todo import manage_tasks
 from core.pomodoro import pomodoro
 from extensions.habbit_track import habbits_manage, habbit_tracker
@@ -33,9 +33,12 @@ def main():
 
         print('\n' * 2)
 
-        for name, key in ITEMS_MENU:
+        n = len(ITEMS_MENU)
+
+        for i, (name, key) in enumerate(ITEMS_MENU):
             row = f'{name:<70}{key:>5}'
-            print(center_line(row, width))
+            r,g,b = lerp_color('#4ea8ff', '#7f88ff', i / n if n else 0)
+            print(center_line(colorize(row, r, g, b), width))
             print()
 
         print('\n')
