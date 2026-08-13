@@ -13,7 +13,7 @@ step 1: clone repository
 `git clone https://github.com/r3ven000/focus-hub.git`
 
 step 2: run
-`cd focus-hub`
+`cd focus-hub/`
 `python -m cli.main`
 
 ## Features
