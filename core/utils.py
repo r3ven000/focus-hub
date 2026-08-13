@@ -3,7 +3,7 @@ import re
 import time
 from pyfiglet import Figlet
 
-figlet = Figlet(font='dos_rebel')
+figlet = Figlet(font='roman')
 
 def clear_screen() -> None:
 #Clears the terminal screen depending on the operating system.
