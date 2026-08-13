@@ -7,6 +7,15 @@ A modular CLI productivity suite for managing your time, tasks, and habits.
 extended with task management, habit tracking, and personal reflection capabilities. 
 It's designed to grow with you—from a focused timer to a complete productivity system.
 
+## Run
+
+step 1: clone repository 
+`git clone https://github.com/r3ven000/focus-hub.git`
+
+step 2: run
+`cd focus-hub/`
+`python -m cli.main`
+
 ## Features
 
 - **Pomodoro Timer** — Time-boxed work sessions with configurable intervals
