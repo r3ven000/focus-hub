@@ -3,18 +3,22 @@ import re
 import time
 from pyfiglet import Figlet
 
-figlet = Figlet(font='roman')
+figlet = Figlet(font="roman")
+
 
 def clear_screen() -> None:
-#Clears the terminal screen depending on the operating system.
-    os.system('cls' if os.name == 'nt' else 'clear')
+    # Clears the terminal screen depending on the operating system.
+    os.system("cls" if os.name == "nt" else "clear")
+
 
 def get_terminal_width() -> int:
     return os.get_terminal_size().columns
 
+
 def in_dev(*args, **kwargs):
     width = os.get_terminal_size().columns
-    print('function in dev!'.center(width))
+    print("function in dev!".center(width))
+
 
 def timer(minutes, width):
     end_time = time.time() + (minutes * 60)
@@ -22,12 +26,12 @@ def timer(minutes, width):
         try:
             remaining = end_time - time.time()
             mins, secs = divmod(int(remaining), 60)
-        
-            os.system('cls' if os.name == 'nt' else 'clear')
+
+            os.system("cls" if os.name == "nt" else "clear")
             width = os.get_terminal_size().columns
-            print('\n' * 3)
-            ascii_time = figlet.renderText(f'{mins:02d}:{secs:02d}')
-            for line in ascii_time.split('\n'):
+            print("\n" * 3)
+            ascii_time = figlet.renderText(f"{mins:02d}:{secs:02d}")
+            for line in ascii_time.split("\n"):
                 if line.strip():
                     print(line.center(width))
             computer = r"""
@@ -71,33 +75,34 @@ def timer(minutes, width):
 
 
 """
-            print('')
-            print('')
-            art_lines = [l for l in computer.split('\n') if l.strip()]
+            print("")
+            print("")
+            art_lines = [l for l in computer.split("\n") if l.strip()]
             pad = max(0, (width - max(len(l) for l in art_lines)) // 2)
             for l in art_lines:
-                print(' ' * pad + l)
+                print(" " * pad + l)
             time.sleep(0.5)
-        except KeyboardInterrupt: 
+        except KeyboardInterrupt:
             break
     print("time's up".center(width))
     time.sleep(1)
 
 
-ANSI_RE = re.compile(r'\x1b\[[0-9;]*m', re.UNICODE)
+ANSI_RE = re.compile(r"\x1b\[[0-9;]*m", re.UNICODE)
 
 
 def center_line(text: str, width: int) -> str:
-    visible = ANSI_RE.sub('', text).rstrip('\n')
+    visible = ANSI_RE.sub("", text).rstrip("\n")
     pad = max(0, (width - len(visible)) // 2)
-    return ' ' * pad + text
+    return " " * pad + text
+
 
 def lerp_color(hex_start, hex_end, t):
-    start = [int(hex_start[i:i+2], 16) for i in (1, 3, 5)]
-    end = [int(hex_end[i:i+2], 16) for i in (1, 3, 5)]
+    start = [int(hex_start[i : i + 2], 16) for i in (1, 3, 5)]
+    end = [int(hex_end[i : i + 2], 16) for i in (1, 3, 5)]
     rgb = tuple(round(a + (b - a) * t) for a, b in zip(start, end))
     return rgb
 
+
 def colorize(text, r, g, b):
-    return f'\x1b[38;2;{r};{g};{b}m{text}\x1b[0m'
-  
+    return f"\x1b[38;2;{r};{g};{b}m{text}\x1b[0m"
