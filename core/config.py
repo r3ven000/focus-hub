@@ -16,8 +16,6 @@ BREAK_TIME = 5
 ITEMS_MENU = [
     ("⏱  pomodoro timer", "p"),
     (" to-do", "t"),
-    (" habbit-tracker", "h"),
-    (" diary", "d"),
     ("  import-data-to-.json", "j"),
     (" import-data-to-Obsidian", "o"),
     (" settings", "s"),
