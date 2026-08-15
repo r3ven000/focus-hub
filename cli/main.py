@@ -19,8 +19,6 @@ habbit_list = []
 manager = {
     "t": (manage_tasks, todo_list),
     "p": (pomodoro,),
-    "h": (habbit_tracker, habbit_list),
-    "d": (in_dev,),
     "j": (in_dev,),
     "o": (in_dev,),
     "s": (in_dev,),
