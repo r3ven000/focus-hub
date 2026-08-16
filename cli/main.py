@@ -65,7 +65,6 @@ def main():
         else:
             print("command not found!".center(width))
             time.sleep(2)
-    print(WELCOME_ART)
 
 
 if __name__ == "__main__":
