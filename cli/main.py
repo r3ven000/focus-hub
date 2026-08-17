@@ -6,10 +6,9 @@ from core.utils import (
     lerp_color,
     colorize,
 )
-from core.storage import load, save
+from core.storage import load
 from core.todo import manage_tasks
 from core.pomodoro import pomodoro
-from extensions.habbit_track import habbits_manage, habbit_tracker
 from core.config import WELCOME_ART, ITEMS_MENU
 import os
 import time
