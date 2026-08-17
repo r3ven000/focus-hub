@@ -1,4 +1,5 @@
 from .utils import get_terminal_width, clear_screen
+from .storage import save
 
 
 def manage_tasks(todo, width):
@@ -50,6 +51,7 @@ def manage_tasks(todo, width):
                     idx = int(parts[1]) - 1  # index task in todo_list
                     if 0 <= idx < len(todo):
                         todo.pop(idx)
+                        save("todo.json", todo)
                     else:
                         print("invalid index".center(width))
                 except ValueError:
@@ -63,6 +65,7 @@ def manage_tasks(todo, width):
                     if new_text_task:
                         if 0 <= idx < len(todo):
                             todo[idx] = new_text_task
+                            save("todo.json", todo)
                 else:
                     print("invalid index".center(width))
             except IndexError:
@@ -73,6 +76,7 @@ def manage_tasks(todo, width):
             new_task = input("enter task: ").strip()
             if new_task:
                 todo.append(new_task)
+                save("todo.json", todo)
             else:
                 print("task cannot be empty".center(width))
     # not tasks

@@ -6,6 +6,7 @@ from core.utils import (
     lerp_color,
     colorize,
 )
+from core.storage import load, save
 from core.todo import manage_tasks
 from core.pomodoro import pomodoro
 from extensions.habbit_track import habbits_manage, habbit_tracker
@@ -13,8 +14,8 @@ from core.config import WELCOME_ART, ITEMS_MENU
 import os
 import time
 
-todo_list = []
-habbit_list = []
+todo_list = load("todo.json")
+habbit_list = load("habits.json")
 
 manager = {
     "t": (manage_tasks, todo_list),
