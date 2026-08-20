@@ -38,12 +38,10 @@ def habit_tracker(habit, width):
         multi_habit = input("add / next / del / edit / quit : ".center(width)).strip()
 
         parts = multi_habit.split()
-        # parts-[habit, number]
 
         if not parts:
             continue
         command = parts[0].lower()
-        # command-[habit(add, next, del, edit, quit)]
 
         # quit
         if command == "quit":
@@ -51,9 +49,9 @@ def habit_tracker(habit, width):
 
         # del
         elif command == "del":
-            if len(parts) > 1:  # [habit(1-st) , number(2-nd)]
+            if len(parts) > 1:
                 try:
-                    idx = int(parts[1]) - 1  # index habit in habits_list
+                    idx = int(parts[1]) - 1
                     if 0 <= idx < len(habit):
                         habit.pop(idx)
                         save("habits.json", habit)
@@ -65,7 +63,7 @@ def habit_tracker(habit, width):
         elif command == "edit":
             try:
                 if len(parts) > 1:
-                    idx = int(parts[1]) - 1  # index '2' in 2 (int)
+                    idx = int(parts[1]) - 1
                     new_text_habit = input("enter new text habit: ")
                     if new_text_habit:
                         habit[idx] = new_text_habit
