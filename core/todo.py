@@ -56,6 +56,9 @@ def manage_tasks(todo, width):
                 except ValueError:
                     print("please enter a valid number".center(width))
                     time.sleep(1)
+            else:
+                print("index not found, try again")
+                time.sleep(1)
         # edit
         elif command == "edit":
             try:
