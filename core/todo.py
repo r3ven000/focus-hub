@@ -53,6 +53,7 @@ def manage_tasks(todo, width):
                         save("todo.json", todo)
                     else:
                         print("invalid index".center(width))
+                        time.sleep(1)
                 except ValueError:
                     print("please enter a valid number".center(width))
                     time.sleep(1)
@@ -69,6 +70,7 @@ def manage_tasks(todo, width):
                         if 0 <= idx < len(todo):
                             todo[idx] = new_text_task
                             save("todo.json", todo)
+
                 else:
                     print("invalid index".center(width))
                     time.sleep(1)

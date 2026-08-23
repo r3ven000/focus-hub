@@ -21,6 +21,7 @@ def main():
         "p": lambda w: pomodoro(w),
         "j": lambda w: in_dev(w),
         "o": lambda w: in_dev(w),
+        "s": lambda w: in_dev(w),
     }
     while True:
         clear_screen()
@@ -41,9 +42,7 @@ def main():
         for i, (name, key) in enumerate(ITEMS_MENU):
             row = f"{name:<70}{key:>5}"
             r, g, b = lerp_color("#4ea8ff", "#7f88ff", i / n if n else 0)
-            print(
-                center_line(colorize(row, r, g, b), width)
-            )
+            print(center_line(colorize(row, r, g, b), width))
             print()
 
         print("\n")
