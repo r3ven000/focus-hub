@@ -1,5 +1,5 @@
 from .arts import computer, coffee
-from utils import timer
+from .utils import timer
 from .config import WORK_TIME, BREAK_TIME
 
 

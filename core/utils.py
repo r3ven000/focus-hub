@@ -32,10 +32,10 @@ def in_dev(*args):
     print("function in dev!".center(width))
 
 
-def timer(minutes, width):
+def timer(minutes, width, art):
     end_time = time.time() + (minutes * 60)
 
-    art_lines = [line for line in computer.split("\n") if line.strip()]
+    art_lines = [line for line in art.split("\n") if line.strip()]
     max_art_len = max(len(line) for line in art_lines)
 
     while time.time() < end_time:
@@ -56,7 +56,7 @@ def timer(minutes, width):
                 print(" " * pad + line)
             time.sleep(0.5)
         except KeyboardInterrupt:
-            break
+            return False
     print("time's up".center(width))
     time.sleep(1)
 
