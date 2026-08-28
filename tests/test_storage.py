@@ -1,6 +1,7 @@
 import json
 
 from core import storage
+from core.storage import JsonStorage, get_storage, set_storage
 
 
 def _write(dirpath, name, content):
@@ -67,3 +68,44 @@ def test_corrupt_backup_does_not_overwrite_previous(isolated_data_dir):
 def test_load_dict_default_type(isolated_data_dir):
     _write(isolated_data_dir, "d.json", '{"k": 1}')
     assert storage.load("d.json", default={}) == {"k": 1}
+
+
+def test_json_storage_custom_directory(tmp_path):
+    custom = tmp_path / "custom"
+    store = JsonStorage(custom)
+    store.save("x.json", ["a", "b"])
+    assert store.load("x.json") == ["a", "b"]
+    assert (custom / "x.json").exists()
+    assert not (tmp_path / "x.json").exists()
+
+
+class InMemoryStorage:
+    """A minimal Storage implementation used to prove backend swapping."""
+
+    def __init__(self):
+        self.data: dict = {}
+
+    def load(self, filename: str, default=None):
+        return self.data.get(filename, default)
+
+    def save(self, filename: str, data) -> None:
+        self.data[filename] = data
+
+
+def test_set_storage_swaps_backend():
+    original = get_storage()
+    try:
+        backend = InMemoryStorage()
+        set_storage(backend)
+        storage.save("mem.json", [1, 2])
+        assert get_storage() is backend
+        assert storage.load("mem.json") == [1, 2]
+    finally:
+        set_storage(original)
+
+
+def test_storage_protocol_is_runtime_checkable():
+    import inspect
+
+    assert inspect.isclass(JsonStorage)
+    assert isinstance(JsonStorage(), storage.Storage)

@@ -1,50 +1,58 @@
-from core.utils import (
+from core.banner import render_menu
+from core.color import tint, tint_center
+from core.plugins import load_builtins, load_plugins, menu_items, run
+from core.config import WELCOME_ART
+from core.settings import apply_settings, load_settings
+from core.terminal import (
     clear_screen,
     get_terminal_width,
     get_terminal_height,
-    center_line,
-    lerp_color,
-    colorize,
+    show_cursor,
 )
-from core.plugins import load_builtins, load_plugins, menu_items, run
-from core.config import WELCOME_ART
 import time
 
 
-def main():
+def main() -> None:
+    # Pull the saved gradient palette into core.config first, so every screen
+    # (menu, timers, managers) opens with the user's colors already applied.
+    apply_settings(load_settings())
     load_builtins()
     load_plugins()
     while True:
-        clear_screen()
-        width = get_terminal_width()
-        height = get_terminal_height()
-        items = menu_items() + [(" quit", "q")]
-        content_height = 5 + (len(items) * 2)
-        top_padding = max(1, ((height - content_height) // 2) - 5)
-        print("\n" * top_padding)
-        art_lines = [line for line in WELCOME_ART.split("\n") if line.strip()]
-        for i, line in enumerate(art_lines):
-            t = i / max(1, len(art_lines) - 1)
-            r, g, b = lerp_color("#4ea8ff", "#7f88ff", t)
-            print(center_line(colorize(line, r, g, b), width))
+        try:
+            clear_screen()
+            width = get_terminal_width()
+            height = get_terminal_height()
+            items = menu_items() + [(" quit", "q")]
+            content_height = 5 + (len(items) * 2)
+            top_padding = max(1, ((height - content_height) // 2) - 5)
+            print("\n" * top_padding)
+            art_lines = [line for line in WELCOME_ART.split("\n") if line.strip()]
+            for i, line in enumerate(art_lines):
+                t = i / max(1, len(art_lines) - 1)
+                print(tint_center(line, width, t))
 
-        print("\n" * 2)
+            print("\n" * 2)
 
-        n = len(items)
-        for i, (name, key) in enumerate(items):
-            row = f"{name:<70}{key:>5}"
-            r, g, b = lerp_color("#4ea8ff", "#7f88ff", i / n if n else 0)
-            print(center_line(colorize(row, r, g, b), width))
-            print()
+            for row in render_menu(items, width):
+                print(row)
+                print()
 
-        print("\n")
+            print("\n")
 
-        manage_inp = input("enter a letter: ").strip().lower()
-        if manage_inp == "q":
-            break
-        run(manage_inp, width)
-        time.sleep(1)
+            manage_inp = input(tint("enter a letter: ")).strip().lower()
+            if manage_inp == "q":
+                break
+            run(manage_inp, width)
+            time.sleep(1)
+        # Ctrl+C anywhere during the loop (menu input, timers, managers)
+        # just redraws the menu instead of crashing the app.
+        except KeyboardInterrupt:
+            continue
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    finally:
+        show_cursor()

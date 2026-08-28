@@ -54,6 +54,12 @@ Coverage report (same command used in CI):
 python -m pytest --cov=core --cov=extensions --cov=cli --cov-report=term-missing
 ```
 
+Static type checking (same command used in CI):
+
+```bash
+python -m mypy cli core extensions
+```
+
 ## Vision
 
 Start with a timer. Expand as needed.  Nothing extra—just what you use.

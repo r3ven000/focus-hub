@@ -54,6 +54,12 @@ python -m pytest
 python -m pytest --cov=core --cov=extensions --cov=cli --cov-report=term-missing
 ```
 
+Статическая проверка типов (та же команда, что в CI):
+
+```bash
+python -m mypy cli core extensions
+```
+
 ## Видение
 
 Начните с таймера. Расширяйте по мере необходимости. Никакого лишнего — только то, что используете.

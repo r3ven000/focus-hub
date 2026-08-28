@@ -20,3 +20,18 @@ def test_unknown_menu_key_does_not_crash(monkeypatch, capsys):
     monkeypatch.setattr("builtins.input", fake_input)
     cli.main.main()
     assert "command not found" in capsys.readouterr().out
+
+
+def test_main_survives_ctrl_c_in_menu(monkeypatch, capsys):
+    calls = {"n": 0}
+
+    def fake_input(prompt=""):
+        calls["n"] += 1
+        if calls["n"] == 1:
+            raise KeyboardInterrupt
+        return "q"
+
+    monkeypatch.setattr("builtins.input", fake_input)
+    cli.main.main()
+    assert calls["n"] == 2
+    assert "quit" in capsys.readouterr().out
