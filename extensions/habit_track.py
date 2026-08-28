@@ -49,29 +49,38 @@ def habit_tracker(habit, width):
 
         # del
         elif command == "del":
-            if len(parts) > 1:
-                try:
-                    idx = int(parts[1]) - 1
-                    if 0 <= idx < len(habit):
-                        habit.pop(idx)
-                        save("habits.json", habit)
-                    else:
-                        print("invalid index".center(width))
-                except ValueError:
-                    print("please enter a valid number".center(width))
+            if len(parts) <= 1:
+                print("index not found, try again".center(width))
+                continue
+            try:
+                idx = int(parts[1]) - 1
+            except ValueError:
+                print("please enter a valid number".center(width))
+                continue
+            if not 0 <= idx < len(habit):
+                print("invalid index".center(width))
+                continue
+            habit.pop(idx)
+            save("habits.json", habit)
         # edit
         elif command == "edit":
+            if len(parts) <= 1:
+                print("index not found, try again".center(width))
+                continue
             try:
-                if len(parts) > 1:
-                    idx = int(parts[1]) - 1
-                    new_text_habit = input("enter new text habit: ")
-                    if new_text_habit:
-                        habit[idx] = new_text_habit
-                        save("habits.json", habit)
-                else:
-                    print("invalid index".center(width))
-            except IndexError:
-                print("please enter a valid number")
+                idx = int(parts[1]) - 1
+            except ValueError:
+                print("please enter a valid number".center(width))
+                continue
+            if not 0 <= idx < len(habit):
+                print("invalid index".center(width))
+                continue
+            new_text_habit = input("enter new text habit: ").strip()
+            if not new_text_habit:
+                print("habit cannot be empty".center(width))
+                continue
+            habit[idx] = new_text_habit
+            save("habits.json", habit)
 
         # add habit
         elif command == "add":
@@ -81,3 +90,6 @@ def habit_tracker(habit, width):
                 save("habits.json", habit)
             else:
                 print("habit cannot be empty".center(width))
+
+        else:
+            print("unknown command".center(width))

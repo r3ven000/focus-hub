@@ -45,38 +45,45 @@ def manage_tasks(todo, width):
 
         # del
         elif command == "del":
-            if len(parts) > 1:
-                try:
-                    idx = int(parts[1]) - 1
-                    if 0 <= idx < len(todo):
-                        todo.pop(idx)
-                        save("todo.json", todo)
-                    else:
-                        print("invalid index".center(width))
-                        time.sleep(1)
-                except ValueError:
-                    print("please enter a valid number".center(width))
-                    time.sleep(1)
-            else:
-                print("index not found, try again")
+            if len(parts) <= 1:
+                print("index not found, try again".center(width))
                 time.sleep(1)
+                continue
+            try:
+                idx = int(parts[1]) - 1
+            except ValueError:
+                print("please enter a valid number".center(width))
+                time.sleep(1)
+                continue
+            if not 0 <= idx < len(todo):
+                print("invalid index".center(width))
+                time.sleep(1)
+                continue
+            todo.pop(idx)
+            save("todo.json", todo)
         # edit
         elif command == "edit":
-            try:
-                if len(parts) > 1:
-                    idx = int(parts[1]) - 1
-                    new_text_task = input("enter new text task: ")
-                    if new_text_task:
-                        if 0 <= idx < len(todo):
-                            todo[idx] = new_text_task
-                            save("todo.json", todo)
-
-                else:
-                    print("invalid index".center(width))
-                    time.sleep(1)
-            except ValueError:
-                print("please enter a valid number")
+            if len(parts) <= 1:
+                print("index not found, try again".center(width))
                 time.sleep(1)
+                continue
+            try:
+                idx = int(parts[1]) - 1
+            except ValueError:
+                print("please enter a valid number".center(width))
+                time.sleep(1)
+                continue
+            if not 0 <= idx < len(todo):
+                print("invalid index".center(width))
+                time.sleep(1)
+                continue
+            new_text_task = input("enter new text task: ").strip()
+            if not new_text_task:
+                print("task cannot be empty".center(width))
+                time.sleep(1)
+                continue
+            todo[idx] = new_text_task
+            save("todo.json", todo)
 
         # add task
         elif command == "add":
@@ -87,3 +94,7 @@ def manage_tasks(todo, width):
             else:
                 print("task cannot be empty".center(width))
                 time.sleep(1)
+
+        else:
+            print("unknown command".center(width))
+            time.sleep(1)

@@ -47,7 +47,7 @@ def main():
 
         print("\n")
 
-        manage_inp = input("enter a letter: ").strip()
+        manage_inp = input("enter a letter: ").strip().lower()
         if manage_inp == "q":
             break
         action = manager.get(manage_inp)
