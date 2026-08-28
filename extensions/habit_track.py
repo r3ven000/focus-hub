@@ -1,15 +1,19 @@
-from core.utils import get_terminal_width, clear_screen
-from core.storage import save
+from core.plugins import register
+from core.storage import load, save
+from core.utils import clear_screen, get_terminal_width
 
 
-def habits_manage(habit):
-    pass
-
-
-def habit_tracker(habit, width):
+@register(
+    name=" habit tracker",
+    key="h",
+    description="Track and review your habits",
+)
+def habit_tracker(width=None):
+    width = width or get_terminal_width()
+    habit = load("habits.json")
     while True:
-        width = get_terminal_width()
         clear_screen()
+        width = get_terminal_width()
 
         print(
             """
@@ -17,7 +21,6 @@ def habit_tracker(habit, width):
     
     Commands:
     - add: Add a new habit
-    - next: 
     - del <index>: Delete habit at index
     - edit <index>: Edit habit at index
     - quit: Return to main menu
@@ -35,7 +38,7 @@ def habit_tracker(habit, width):
 
 
         """)
-        multi_habit = input("add / next / del / edit / quit : ".center(width)).strip()
+        multi_habit = input("add / del / edit / quit : ".center(width)).strip()
 
         parts = multi_habit.split()
 
