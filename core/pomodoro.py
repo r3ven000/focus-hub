@@ -58,11 +58,12 @@ class PomodoroManager:
     def run_session(self, width: int) -> bool:
         """Run one full work+break cycle. Returns False if it is interrupted."""
         # Work timer interrupted (Ctrl+C) -> don't start the break at all.
-        print(tint_center("staeting session...", width))
+        print(tint_center("starting session...", width))
         if not timer(self.work_time, width, art=computer):
             return False
         print(tint_center("starting break...", width))
-        timer(self.break_time, width, art=coffee)
+        if not timer(self.break_time, width, art=coffee):
+            return False
         self.cycles += 1
         return True
 

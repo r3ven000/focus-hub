@@ -1,4 +1,7 @@
 import json
+from pathlib import Path
+
+import pytest
 
 from core import storage
 from core.storage import JsonStorage, get_storage, set_storage
@@ -109,3 +112,12 @@ def test_storage_protocol_is_runtime_checkable():
 
     assert inspect.isclass(JsonStorage)
     assert isinstance(JsonStorage(), storage.Storage)
+
+
+def test_backup_slots_exhausted_raises_oserror(isolated_data_dir, monkeypatch):
+    _write(isolated_data_dir, "c.json", "{bad")
+    # Pretend every possible backup name already exists so the 1000-slot
+    # search in ``_backup_corrupt`` is exhausted.
+    monkeypatch.setattr(Path, "exists", lambda self: True)
+    with pytest.raises(OSError):
+        storage.load("c.json")

@@ -113,7 +113,11 @@ class HabitManager:
     def _show_list(self, habits: dict[str, list[str]], width: int) -> None:
         names = list(habits)
         print_banner(self.title, width)
-        print(tint_center("Per-day completion history with GitHub heatmaps.", width, 0.0))
+        print(
+            tint_center(
+                "Per-day completion history with GitHub heatmaps.", width, 0.0
+            )
+        )
         print()
         for row in render_menu(self._command_rows(), width):
             print(row)
@@ -188,7 +192,9 @@ class HabitManager:
         print(colorize(f"{name} done {mark}", *GREEN_LEVELS[3]))
         time.sleep(1)
 
-    def _undone(self, habits: dict[str, list[str]], parts: list[str], width: int) -> None:
+    def _undone(
+        self, habits: dict[str, list[str]], parts: list[str], width: int
+    ) -> None:
         names = list(habits)
         idx = self._parse_index(parts, width)
         if idx is None:
@@ -288,7 +294,11 @@ class HabitManager:
         # if today is not done yet), stopping at the first missing day.
         done = set(dates)
         today = _today()
-        anchor = today if today.isoformat() in done else today - datetime.timedelta(days=1)
+        anchor = (
+            today
+            if today.isoformat() in done
+            else today - datetime.timedelta(days=1)
+        )
         count = 0
         day = anchor
         while day.isoformat() in done:

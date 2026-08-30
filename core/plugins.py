@@ -18,9 +18,10 @@ from __future__ import annotations
 import importlib.util
 import inspect
 import sys
+from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Callable, TypeVar
+from typing import Any, TypeVar
 
 EXTENSIONS_DIR = Path(__file__).resolve().parent.parent / "extensions"
 
@@ -75,11 +76,11 @@ def load_builtins() -> None:
     global _builtins_loaded
     if _builtins_loaded:
         return
-    from core.pomodoro import pomodoro
-    from core.todo import manage_tasks
-    from core.storage import load
     from core.placeholder import in_dev
+    from core.pomodoro import pomodoro
     from core.settings import settings_menu
+    from core.storage import load
+    from core.todo import manage_tasks
 
     register("⏱  pomodoro timer", "p", "Run a focused pomodoro session")(pomodoro)
     register("  to-do", "t", "Manage your task list")(

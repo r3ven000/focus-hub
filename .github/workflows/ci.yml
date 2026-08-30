@@ -25,7 +25,10 @@ jobs:
           pip install -r requirements.txt -r requirements-dev.txt
 
       - name: Run tests with coverage
-        run: python -m pytest --cov=core --cov=extensions --cov=cli --cov-report=term-missing
+        run: python -m pytest --cov=core --cov=extensions --cov=cli --cov-report=term-missing --cov-fail-under=100
 
       - name: Run mypy type checks
         run: python -m mypy cli core extensions
+
+      - name: Run ruff lints
+        run: python -m ruff check cli core extensions tests

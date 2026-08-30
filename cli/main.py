@@ -1,15 +1,16 @@
+import time
+
 from core.banner import render_menu
 from core.color import tint, tint_center
-from core.plugins import load_builtins, load_plugins, menu_items, run
 from core.config import WELCOME_ART
+from core.plugins import load_builtins, load_plugins, menu_items, run
 from core.settings import apply_settings, load_settings
 from core.terminal import (
     clear_screen,
-    get_terminal_width,
     get_terminal_height,
+    get_terminal_width,
     show_cursor,
 )
-import time
 
 
 def main() -> None:
@@ -49,6 +50,10 @@ def main() -> None:
         # just redraws the menu instead of crashing the app.
         except KeyboardInterrupt:
             continue
+        # Closed stdin (e.g. `python -m cli.main < /dev/null`) should exit
+        # cleanly instead of crashing with a traceback.
+        except EOFError:
+            break
 
 
 if __name__ == "__main__":

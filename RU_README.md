@@ -41,23 +41,37 @@ def run(width):
 
 ## Разработка
 
-Запуск тестов:
+Запуск в терминале:
+
+```bash
+python -m cli.main
+```
+
+`q` выходит из меню; `Ctrl+C` перерисовывает меню без падения.
+
+Установка зависимостей для разработки:
 
 ```bash
 pip install -r requirements.txt -r requirements-dev.txt
 python -m pytest
 ```
 
-Отчёт о покрытии (та же команда, что в CI):
+Тесты с покрытием (та же команда, что в CI):
 
 ```bash
-python -m pytest --cov=core --cov=extensions --cov=cli --cov-report=term-missing
+python -m pytest --cov=core --cov=extensions --cov=cli --cov-report=term-missing --cov-fail-under=100
 ```
 
 Статическая проверка типов (та же команда, что в CI):
 
 ```bash
 python -m mypy cli core extensions
+```
+
+Линтинг (та же команда, что в CI):
+
+```bash
+python -m ruff check cli core extensions tests
 ```
 
 ## Видение

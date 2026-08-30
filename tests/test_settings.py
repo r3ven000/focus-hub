@@ -1,5 +1,6 @@
 import pytest
 
+import core.settings as settings_module
 from core import config, plugins, storage
 from core.settings import (
     DEFAULT_SETTINGS,
@@ -165,3 +166,54 @@ def test_settings_manager_constructs_with_defaults():
     mgr = SettingsManager()
     assert mgr.filename == "settings.json"
     assert mgr.title == "settings"
+
+
+def test_settings_menu_ignores_empty_input(capsys, scripted_input):
+    scripted_input(["", "3"])
+    settings_menu(80)
+    out = capsys.readouterr().out
+    assert "colors" in out
+
+
+def test_settings_menu_unknown_command(capsys, scripted_input):
+    scripted_input(["xyz", "3"])
+    settings_menu(80)
+    assert "unknown command" in capsys.readouterr().out
+
+
+def test_colors_menu_ignores_empty_input(capsys, scripted_input):
+    scripted_input(["1", "", "3", "3"])
+    settings_menu(80)
+    assert "unknown command" not in capsys.readouterr().out
+
+
+def test_colors_menu_unknown_command(capsys, scripted_input):
+    scripted_input(["1", "xyz", "3", "3"])
+    settings_menu(80)
+    assert "unknown command" in capsys.readouterr().out
+
+
+def test_colors_menu_prompts_for_color(capsys, scripted_input):
+    scripted_input(["1", "1", "#00ff00", "3", "3"])
+    settings_menu(80)
+    assert storage.load("settings.json", default={})["gradient_start"] == "#00ff00"
+    assert "top color set to #00ff00" in capsys.readouterr().out
+
+
+def test_extensions_menu_handles_non_numeric_toggle(capsys, scripted_input):
+    scripted_input(["2", "abc", "q", "3"])
+    settings_menu(80)
+    assert "unknown command" in capsys.readouterr().out
+
+
+def test_extensions_menu_rejects_out_of_range(capsys, scripted_input):
+    scripted_input(["2", "99", "q", "3"])
+    settings_menu(80)
+    assert "invalid index" in capsys.readouterr().out
+
+
+def test_extensions_menu_no_extensions(capsys, scripted_input, monkeypatch):
+    monkeypatch.setattr(settings_module, "_available_extensions", lambda: [])
+    scripted_input(["2", "q", "3"])
+    settings_menu(80)
+    assert "no extensions found" in capsys.readouterr().out

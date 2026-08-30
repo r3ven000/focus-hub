@@ -35,3 +35,23 @@ def test_main_survives_ctrl_c_in_menu(monkeypatch, capsys):
     cli.main.main()
     assert calls["n"] == 2
     assert "quit" in capsys.readouterr().out
+
+
+def test_main_exits_cleanly_on_eof(monkeypatch, capsys):
+    def fake_input(prompt=""):
+        raise EOFError
+
+    monkeypatch.setattr("builtins.input", fake_input)
+    cli.main.main()
+    assert "habit tracker" in capsys.readouterr().out
+
+
+def test_main_entry_point_show_cursor(monkeypatch):
+    import runpy
+    from pathlib import Path
+
+    monkeypatch.setattr("builtins.input", lambda prompt="": "q")
+    runpy.run_path(
+        str(Path(__file__).resolve().parent.parent / "cli" / "main.py"),
+        run_name="__main__",
+    )

@@ -3,8 +3,8 @@ import datetime
 import pytest
 
 import core.habit_manager as habit_module
-from extensions import habit_track
 from core import plugins, storage
+from extensions import habit_track
 
 
 @pytest.fixture
@@ -58,7 +58,9 @@ def test_habit_mark_done_on_date(
     storage.save("habits.json", {"gym": ["2026-08-20"]})
     scripted_input(["done 1 2026-08-25", "quit"])
     habit_track.habit_tracker()
-    assert storage.load("habits.json", default={}) == {"gym": ["2026-08-20", "2026-08-25"]}
+    assert storage.load("habits.json", default={}) == {
+        "gym": ["2026-08-20", "2026-08-25"]
+    }
 
 
 def test_habit_undone(
@@ -70,7 +72,9 @@ def test_habit_undone(
     assert storage.load("habits.json", default={}) == {"gym": []}
 
 
-def test_habit_rejects_bad_dates(isolated_data_dir, scripted_input, capsys, fixed_today):
+def test_habit_rejects_bad_dates(
+    isolated_data_dir, scripted_input, capsys, fixed_today
+):
     storage.save("habits.json", {"gym": []})
     scripted_input(
         [
@@ -151,7 +155,10 @@ def test_habit_wrong_typed_data_degrades_to_empty(
 
 def test_habit_coerces_malformed_values(isolated_data_dir):
     storage.save("habits.json", {"gym": "abc", "read": [1, "2026-08-01", None]})
-    assert habit_module.load_habits("habits.json") == {"gym": [], "read": ["2026-08-01"]}
+    assert habit_module.load_habits("habits.json") == {
+        "gym": [],
+        "read": ["2026-08-01"],
+    }
 
 
 def test_streak_counts_consecutive_days(monkeypatch):
@@ -170,3 +177,15 @@ def test_habit_is_a_registered_plugin():
     assert plugin is not None
     assert plugin.name == " habit tracker"
     assert plugin.description == "Track and review your habits"
+
+
+def test_habit_empty_input_and_invalid_indexes(
+    isolated_data_dir, scripted_input, capsys
+):
+    storage.save("habits.json", {"gym": []})
+    scripted_input(["", "done 9", "grid nope", "", "quit"])
+    habit_track.habit_tracker()
+    out = capsys.readouterr().out
+    assert "invalid index" in out
+    assert "please enter a valid number" in out
+    assert storage.load("habits.json", default={}) == {"gym": []}

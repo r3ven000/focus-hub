@@ -146,3 +146,19 @@ def test_builtin_todo_handler_persists(isolated_data_dir, scripted_input):
     scripted_input(["add", "buy milk", "quit"])
     assert plugins.run("t", 80) is True
     assert storage.load("todo.json") == ["buy milk"]
+
+
+def test_import_extension_skips_non_python_file(tmp_path):
+    path = tmp_path / "notes.txt"
+    path.write_text("print('hi')\n", encoding="utf-8")
+    plugins._import_extension(path)
+    assert plugins.menu_items() == []
+
+
+def test_available_extensions_missing_dir_returns_empty(tmp_path):
+    assert plugins.available_extensions(tmp_path / "nope") == []
+
+
+def test_load_plugins_missing_dir_is_noop(tmp_path):
+    plugins.load_plugins(tmp_path / "nope")
+    assert plugins.menu_items() == []

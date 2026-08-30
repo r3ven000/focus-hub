@@ -44,3 +44,13 @@ def test_run_list_mutates_in_place(isolated_data_dir, scripted_input):
     manager.run_list(items)
     assert items == ["changed"]
     assert storage.load("list.json") == ["changed"]
+
+
+def test_empty_input_and_edit_without_index(isolated_data_dir, scripted_input, capsys):
+    storage.save("list.json", ["keep"])
+    manager = GenericListManager("list.json", "item")
+    scripted_input(["", "3", "quit"])
+    manager.run()
+    out = capsys.readouterr().out
+    assert "index not found, try again" in out
+    assert storage.load("list.json") == ["keep"]

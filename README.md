@@ -41,23 +41,37 @@ are registered the same way through `core.plugins.load_builtins()`.
 
 ## Development
 
-Run the test suite with:
+Setup and run in the terminal:
+
+```bash
+python -m cli.main
+```
+
+`q` quits the menu; `Ctrl+C` redraws it without crashing.
+
+Install dependencies for development:
 
 ```bash
 pip install -r requirements.txt -r requirements-dev.txt
 python -m pytest
 ```
 
-Coverage report (same command used in CI):
+Test suite with coverage (same command as CI):
 
 ```bash
-python -m pytest --cov=core --cov=extensions --cov=cli --cov-report=term-missing
+python -m pytest --cov=core --cov=extensions --cov=cli --cov-report=term-missing --cov-fail-under=100
 ```
 
-Static type checking (same command used in CI):
+Static type checking (same command as CI):
 
 ```bash
 python -m mypy cli core extensions
+```
+
+Linting (same command as CI):
+
+```bash
+python -m ruff check cli core extensions tests
 ```
 
 ## Vision

@@ -26,7 +26,7 @@ def test_run_session_full_cycle(fake_time, capsys):
     manager = PomodoroManager(work_time=10, break_time=5)
     assert manager.run_session(80) is True
     out = capsys.readouterr().out
-    assert "staeting session" in out
+    assert "starting session" in out
     assert "starting break" in out
     assert manager.cycles == 1
 
@@ -40,8 +40,32 @@ def test_run_session_interrupt_skips_break(monkeypatch, capsys):
     manager = PomodoroManager()
     assert manager.run_session(80) is False
     out = capsys.readouterr().out
-    assert "staeting session" in out
+    assert "starting session" in out
     assert "starting break" not in out
+    assert manager.cycles == 0
+
+
+def test_run_session_interrupt_during_break(monkeypatch, capsys):
+    class InterruptingBreak(FakeTime):
+        def __init__(self):
+            super().__init__()
+            self.sleep_calls = 0
+
+        def sleep(self, seconds):
+            self.now += seconds
+            self.sleep_calls += 1
+            # Let the work timer finish (10 min = 1200 half-second ticks plus
+            # the trailing "time's up" sleep), then interrupt the first tick
+            # of the break (call #1202).
+            if self.sleep_calls > 1201:
+                raise KeyboardInterrupt
+
+    monkeypatch.setattr(timer_module, "time", InterruptingBreak())
+    manager = PomodoroManager(work_time=10, break_time=5)
+    assert manager.run_session(80) is False
+    out = capsys.readouterr().out
+    assert "starting session" in out
+    assert "starting break" in out
     assert manager.cycles == 0
 
 
@@ -58,7 +82,7 @@ def test_manager_run_with_commands(monkeypatch, capsys):
     manager.run(80)
     out = capsys.readouterr().out
     assert "Interactive pomodoro session manager." in out
-    assert "staeting session" in out
+    assert "starting session" in out
     assert "starting break" in out
     assert manager.cycles == 1
 

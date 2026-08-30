@@ -5,7 +5,7 @@ import time
 
 from .banner import figlet
 from .color import center_line, tint, tint_center
-from .terminal import get_terminal_width, home_screen, hide_cursor, show_cursor
+from .terminal import get_terminal_width, hide_cursor, home_screen, show_cursor
 
 
 def timer(minutes: int | float, width: int, art: str) -> bool:

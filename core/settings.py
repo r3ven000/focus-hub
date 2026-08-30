@@ -102,7 +102,9 @@ _COLOR_COMMAND_KEYS: dict[str, str] = {"1": "top", "2": "bottom", "3": "quit"}
 class SettingsManager:
     """Interactive settings screen: colors and extension toggles."""
 
-    def __init__(self, filename: str = SETTINGS_FILENAME, title: str = "settings") -> None:
+    def __init__(
+        self, filename: str = SETTINGS_FILENAME, title: str = "settings"
+    ) -> None:
         self.filename = filename
         self.title = title
         self.settings: dict[str, Any] = {}
@@ -170,8 +172,12 @@ class SettingsManager:
         print()
 
         # Show each color's hex code, tinted with its own color.
-        top = str(self.settings.get("gradient_start", DEFAULT_SETTINGS["gradient_start"]))
-        bottom = str(self.settings.get("gradient_end", DEFAULT_SETTINGS["gradient_end"]))
+        top = str(
+            self.settings.get("gradient_start", DEFAULT_SETTINGS["gradient_start"])
+        )
+        bottom = str(
+            self.settings.get("gradient_end", DEFAULT_SETTINGS["gradient_end"])
+        )
         print(tint_center(f"top color code    : {top}", width, 0.0))
         print(tint_center(f"bottom color code : {bottom}", width, 1.0))
         print()
@@ -232,10 +238,12 @@ class SettingsManager:
         print(tint_center("Choose which extensions load at startup.", width, 0.0))
         print()
         enabled = self.settings.get("enabled_extensions")
+        selection = enabled if isinstance(enabled, list) else exts
         n = max(1, len(exts))
         for i, ext in enumerate(exts, start=1):
-            state = "on" if ext in (enabled if isinstance(enabled, list) else exts) else "off"
-            print(tint_center(f"{i}. {ext:<24} [{state}]", width, (i - 1) / max(1, n - 1)))
+            state = "on" if ext in selection else "off"
+            tint_value = (i - 1) / max(1, n - 1)
+            print(tint_center(f"{i}. {ext:<24} [{state}]", width, tint_value))
         if not exts:
             print(tint_center("no extensions found", width))
         print()

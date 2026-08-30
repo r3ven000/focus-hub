@@ -3,8 +3,8 @@ import os
 from core.terminal import (
     clear_screen,
     get_terminal_width,
-    home_screen,
     hide_cursor,
+    home_screen,
     show_cursor,
 )
 

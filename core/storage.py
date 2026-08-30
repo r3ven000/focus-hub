@@ -81,7 +81,7 @@ class JsonStorage:
         if not path.exists():
             return copy.deepcopy(default)
         try:
-            with open(path, "r", encoding="utf-8") as f:
+            with open(path, encoding="utf-8") as f:
                 data = json.load(f)
         except (json.JSONDecodeError, ValueError, OSError):
             data = None
